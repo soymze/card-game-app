@@ -1,0 +1,30 @@
+.cards {
+    display: grid;
+    grid-template-columns: repeat(5, 5rem); /* 5 sütun, her kartın genişliği 50px */
+    grid-template-rows: repeat(5, 3.5rem); /* 5 satır, her kartın yüksekliği 50px */
+    grid-gap: 1rem; /* Kartlar arası boşluk yarıya indirildi */
+    justify-content: center;
+    margin: 50px auto;
+    margin-top: 10rem;
+  }
+  
+  .card {
+    background-color: #8B93FF;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px; /* Kartlar küçüldüğü için font boyutunu da küçülttük */
+    height: 4.2rem;
+    width: 4rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border-radius: 0.2rem;
+    color: white;
+  }
+  
+  .card:hover {
+    transform: scale(1.05); /* Hover animasyonu aynı kaldı */
+  }
+  

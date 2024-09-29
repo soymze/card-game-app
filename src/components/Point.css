@@ -1,0 +1,18 @@
+.point-container{
+    width: 100%;
+    background-color: #FF71CD;
+    min-height: 5rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.point{
+    background-color: #8B93FF;
+    font-size: 2rem;
+    margin-left: 48%;
+    border-radius: 0.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-left: 0.5rem solid #5755FE;
+}
