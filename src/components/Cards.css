@@ -27,4 +27,9 @@
   .card:hover {
     transform: scale(1.05); /* Hover animasyonu aynı kaldı */
   }
+
+  img{
+    width: 75%;
+    height: 75%;
+  }
   
