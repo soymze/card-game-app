@@ -80,14 +80,20 @@ function Cards() {
   };
 
   return (
-    <div className='cards'>
+    <div className="cards">
       {cards.map((card, index) => (
-        <div className='card' key={index} onClick={() => handleCardClick(index)}>
-          {visibleCards[index] ? (
-            <img src={card.icon} alt={card.name} /> // SVG ikonunu göster
-          ) : (
-            ''
-          )}
+        <div
+          className={`card ${visibleCards[index] ? 'flipped' : ''}`} // flipped sınıfı burada ekleniyor
+          key={index}
+          onClick={() => handleCardClick(index)}
+        >
+          <div className="card-inner"> 
+            <div className="card-front">
+            </div>
+            <div className="card-back">
+              <img src={card.icon} alt={card.name} /> 
+            </div>
+          </div>
         </div>
       ))}
     </div>
