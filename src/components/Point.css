@@ -15,4 +15,13 @@
     padding-left: 1rem;
     padding-right: 1rem;
     border-left: 0.5rem solid #5755FE;
+    color: black;
 }
+
+  .point.positive {
+    color: green; /* Pozitif durumda yeşil */
+  }
+  
+  .point.negative {
+    color: red; /* Negatif durumda kırmızı */
+  }
