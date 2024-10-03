@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Cards.css";
 import Hydrogen from "../icons/Hydrogen.svg";
 import Helium from "../icons/Helium.svg";
@@ -15,7 +15,7 @@ import Magnesium from "../icons/Magnesium.svg";
 import Joker from "../icons/Joker.svg";
 import Points from "./Point.js";
 
-const cards = [
+const initialCards = [
   { name: "Hydrogen", icon: Hydrogen },
   { name: "Helium", icon: Helium },
   { name: "Lithium", icon: Lithium },
@@ -43,14 +43,28 @@ const cards = [
   { name: "Joker", icon: Joker },
 ];
 
+const shuffleCards = (cardsArray) => {
+  for (let i = cardsArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cardsArray[i], cardsArray[j]] = [cardsArray[j], cardsArray[i]];
+  }
+  return cardsArray;
+};
+
 function Cards() {
   const [visibleCards, setVisibleCards] = useState(
-    Array(cards.length).fill(false)
+    Array(initialCards.length).fill(false)
   );
+  const [cards, setCards] = useState(initialCards); // Burada initialCards'ı kullandık
   const [selectedCards, setSelectedCards] = useState([]);
   const [lock, setLock] = useState(false);
   const [points, setPoints] = useState(0);
   const [jokerRevealed, setJokerRevealed] = useState(false);
+
+  useEffect(() => {
+    const shuffledCards = shuffleCards([...initialCards]); // Kartları karıştır
+    setCards(shuffledCards); // karıştırılan kartları state'e set et
+  }, []);
 
   const handleCardClick = (index) => {
     if (visibleCards[index] || lock || selectedCards.length === 2) return;
@@ -60,13 +74,12 @@ function Cards() {
 
     const newSelectedCards = [...selectedCards, index];
     setVisibleCards(newVisibleCards);
-    setSelectedCards(newSelectedCards);
 
-    // Joker kartı açıldığında isimleri aynı olan kartları otomatik açma
+    // Eğer açılan kart Joker ise
     if (cards[index].name === 'Joker' && !jokerRevealed) {
-      const matchedPairIndexes = findMatchingPair();
       setJokerRevealed(true);
 
+      const matchedPairIndexes = findMatchingPair();
       if (matchedPairIndexes.length === 2) {
         const [firstMatch, secondMatch] = matchedPairIndexes;
         newVisibleCards[firstMatch] = true;
@@ -77,7 +90,15 @@ function Cards() {
           setPoints(points + 15); // Joker kartı ile eşleşen kartlar için puan ekle
         }, 500);
       }
-    } else if (newSelectedCards.length === 2) {
+
+      // Joker açık kaldığı için seçimi sıfırla ama jokeri açık bırak
+      setSelectedCards([]);
+      return; // Joker açıldığında diğer işlemler yapılmadan burada çıkılır.
+    }
+
+    setSelectedCards(newSelectedCards);
+
+    if (newSelectedCards.length === 2) {
       setLock(true);
 
       const [firstCardIndex, secondCardIndex] = newSelectedCards;
