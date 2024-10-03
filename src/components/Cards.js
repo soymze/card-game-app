@@ -55,7 +55,7 @@ function Cards() {
   const [visibleCards, setVisibleCards] = useState(
     Array(initialCards.length).fill(false)
   );
-  const [cards, setCards] = useState(initialCards); // Burada initialCards'ı kullandık
+  const [cards, setCards] = useState(initialCards);
   const [selectedCards, setSelectedCards] = useState([]);
   const [lock, setLock] = useState(false);
   const [points, setPoints] = useState(0);
@@ -63,8 +63,28 @@ function Cards() {
 
   useEffect(() => {
     const shuffledCards = shuffleCards([...initialCards]); // Kartları karıştır
-    setCards(shuffledCards); // karıştırılan kartları state'e set et
+    setCards(shuffledCards); // kartları state'e set et
   }, []);
+
+  useEffect(() => {
+    // Tüm kartlar açıldığında alert göster
+    if (visibleCards.every((visible) => visible)) {
+      const playAgain = window.confirm("Tüm kartlar açıldı. Tekrar oynamak ister misiniz?");
+      if (playAgain) {
+        resetGame(); // Oyunu sıfırla
+      }
+    }
+  }, [visibleCards]);
+
+  const resetGame = () => {
+    setVisibleCards(Array(cards.length).fill(false)); // Kartları kapat
+    setSelectedCards([]); // Seçilen kartları sıfırla
+    setLock(false); // Kilidi aç
+    setPoints(0); // Puanı sıfırla
+    setJokerRevealed(false); // Jokeri sıfırla
+    const shuffledCards = shuffleCards([...initialCards]); // Yeniden karıştır
+    setCards(shuffledCards); // Yeniden set et
+  };
 
   const handleCardClick = (index) => {
     if (visibleCards[index] || lock || selectedCards.length === 2) return;
@@ -106,8 +126,8 @@ function Cards() {
       // Kartların isimlerine göre eşleşme kontrolü
       if (cards[firstCardIndex].name === cards[secondCardIndex].name) {
         setPoints(points + 15); // Eşleşirse puan ekle
-        setSelectedCards([]);
-        setLock(false);
+        setSelectedCards([]); // Seçilen kartları sıfırla
+        setLock(false); // Kilidi aç
       } else {
         setTimeout(() => {
           setPoints(points - 5); // Eşleşmezse puan çıkar
@@ -115,8 +135,8 @@ function Cards() {
           resetVisibleCards[firstCardIndex] = false;
           resetVisibleCards[secondCardIndex] = false;
           setVisibleCards(resetVisibleCards);
-          setSelectedCards([]);
-          setLock(false);
+          setSelectedCards([]); // Seçilen kartları sıfırla
+          setLock(false); // Kilidi aç
         }, 1000);
       }
     }
